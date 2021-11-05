@@ -10,5 +10,6 @@ Gem::Specification.new do |spec|
   spec.files = Dir["lib/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   spec.test_files = Dir["spec/**/*"]
   spec.add_dependency "dataloader"
+  spec.add_dependency "concurrent-ruby"
   spec.add_development_dependency "mock_redis"
 end

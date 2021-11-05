@@ -1,11 +1,13 @@
+require "concurrent"
 require "dataloader/redis_cache/version"
 
 class Dataloader
   class RedisCache
-    def initialize(redis, replica_redis: nil, memory_cache: {})
-      @memory_cache = memory_cache
+    def initialize(redis, replica_redis: nil, prefix: nil, cache: Concurrent::Map.new)
+      @cache = cache
       @writer = redis
       @reader = replica_redis || redis
+      @prefix = prefix
     end
 
     def compute_if_absent(key, &block)
@@ -21,15 +23,21 @@ class Dataloader
 
     private
 
+    def gen_key(key)
+      [@prefix, key.to_s].compact.join(':')
+    end
+
     def get(key)
-      value_str = @memory_cache[key] || @reader.get(key)
+      key_str = gen_key(key)
+      value_str = @cache[key_str] || @reader.get(key_str)
       Marshal.load(value_str) if value_str
     end
 
     def set(key, value)
+      key_str = gen_key(key)
       value_str = Marshal.dump(value)
-      @writer.set(key, value_str)
-      @memory_cache[key] = value_str
+      @writer.set(key_str, value_str)
+      @cache[key_str] = value_str
     end
   end
 end
