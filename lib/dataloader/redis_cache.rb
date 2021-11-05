@@ -21,6 +21,10 @@ class Dataloader
       end
     end
 
+    def reset(key)
+      del(key)
+    end
+
     private
 
     def gen_key(key)
@@ -38,6 +42,12 @@ class Dataloader
       value_str = Marshal.dump(value)
       @writer.set(key_str, value_str)
       @cache[key_str] = value_str
+    end
+
+    def del(key)
+      key_str = gen_key(key)
+      @writer.del(key_str)
+      @cache.delete(key_str)
     end
   end
 end
