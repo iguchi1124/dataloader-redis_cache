@@ -10,11 +10,11 @@ class Dataloader
       @prefix = prefix
     end
 
-    def compute_if_absent(key, &block)
+    def compute_if_absent(key)
       value = get(key)
       return value if value
 
-      promise = block.call
+      promise = yield
       promise.then do |value|
         set(key, value) if value
         value
