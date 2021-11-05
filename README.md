@@ -1,14 +1,13 @@
 # Dataloader::RedisCache
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/dataloader/redis_cache`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A [dataloader](https://github.com/sheerun/dataloader) redis cache implementation.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
+gem 'dataloader'
 gem 'dataloader-redis_cache'
 ```
 
@@ -16,13 +15,14 @@ And then execute:
 
     $ bundle install
 
-Or install it yourself as:
-
-    $ gem install dataloader-redis_cache
-
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+redis = Redis.new
+Dataloader.new(cache: Dataloader::RedisCache.new(redis, prefix: 'users')) do |ids|
+  User.find(*ids)
+end
+```
 
 ## Development
 
@@ -32,7 +32,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/dataloader-redis_cache. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/dataloader-redis_cache/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/iguchi1124/dataloader-redis_cache. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/iguchi1124/dataloader-redis_cache/blob/main/CODE_OF_CONDUCT.md).
 
 
 ## License
@@ -41,4 +41,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Dataloader::RedisCache project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/dataloader-redis_cache/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Dataloader::RedisCache project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/iguchi1124/dataloader-redis_cache/blob/main/CODE_OF_CONDUCT.md).
