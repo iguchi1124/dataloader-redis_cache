@@ -25,6 +25,15 @@ class Dataloader
       del(key)
     end
 
+    def reset_all
+      key_pattern = [@prefix, '*'].join(':')
+      keys = @reader.keys(key_pattern)
+      unless keys.empty?
+        @writer.del(keys)
+        keys.each { |key| @cache.delete(key) }
+      end
+    end
+
     private
 
     def gen_key(key)
